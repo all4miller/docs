@@ -56,7 +56,7 @@ class DocPage < Erector::Widgets::Page
   end
 
   external :style,  <<-CSS
-  @import url(/css/bootstrap.min.css);
+  @import url(/css/header.css);
   CSS
 
   # this is how to load the Open Sans font when we know we're online
@@ -115,49 +115,38 @@ class DocPage < Erector::Widgets::Page
   end
 
   def body_content
-    nav(:class => "top navbar navbar-default navbar-static-top", :role => "navigation") {
+    nav(class: "top cf", role: "navigation") {
 
-      div(:class => "navbar-header title") {
-        button(:class => "navbar-toggle", :type => "button", "data-toggle" => "collapse",
-               "data-target" => ".railsbridge-nav-collapse") {
-          span("Toggle Navigation", :class => "sr-only")
-          span(:class => "icon-bar")
-          span(:class => "icon-bar")
-          span(:class => "icon-bar")
-        }
-        a(:href => "/#{site_name}") {
-          span("RailsBridge ", :class => "brand") 
+      div(class: "navbar-header cf title") {
+        a(href: "/#{site_name}") {
+          span("RailsBridge ", class: "brand")
           text site_name.capitalize
         }
       }
-      div(:class => "collapse navbar-collapse railsbridge-nav-collapse") {
-        ul(:class => "navbar-nav nav navbar-right") {
+      ul(class: "navbar-nav nav") {
 
-          li(:class => "dropdown") {
-            a("sites", :href => "#", :class => "dropdown-toggle",
-              "data-toggle" => "dropdown")
-            widget SiteIndex, site_name: site_name
-          }
-
-          top_links.each do |top_link|
-            widget top_link
-          end
-
+        li(class: "dropdown") {
+          a("sites", href: "#", class: "dropdown-toggle", "data-toggle" => "dropdown")
+          widget SiteIndex, site_name: site_name
         }
+
+        top_links.each do |top_link|
+          widget top_link
+        end
       }
     }
 
     widget Contents, site_name: site_name, page_name: page_name
 
-    div(:class=>:main) {
-      h1 doc_title, :class=>"doc_title"
-      div(:class=>:doc) {
+    div(class: :main) {
+      h1 doc_title, class: "doc_title"
+      div(class: :doc) {
         doc_content
       }
       if @back
         div.back {
           text "Back to "
-          a(:class => "back", :href => @back) do
+          a(class: "back", href: @back) do
             text @back.split('#').first #todo: titleize etc, use real doc object
           end
         }
