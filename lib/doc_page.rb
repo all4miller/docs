@@ -1,6 +1,7 @@
 require 'erector'
 require "contents"
 require "site_index"
+require 'erector_scss'
 
 class InstallfestExternalRenderer < ExternalRenderer
   # render <style> tags plainly, without "text/css" (which browsers will assume by default)
@@ -25,6 +26,11 @@ class DocPage < Erector::Widgets::Page
 
   needs :src
   attr_reader :src
+
+  def self.css_path
+    here = File.expand_path File.dirname(__FILE__)
+    File.expand_path "#{here}/../public/css"
+  end
 
   # wire up the InstallfestExternalRenderer
   def included_head_content
@@ -55,9 +61,8 @@ class DocPage < Erector::Widgets::Page
     "#{doc_title} - #{site_title}"
   end
 
-  external :style,  <<-CSS
-  @import url(/css/header.css);
-  CSS
+  external :style, scss(File.read("#{css_path}/header.scss"))
+  external :style, scss(File.read("#{css_path}/toc.scss"))
 
   # this is how to load the Open Sans font when we know we're online
   # external :style,  <<-CSS
